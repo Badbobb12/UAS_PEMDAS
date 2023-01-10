@@ -73,7 +73,7 @@ int main(){
     int input1[100],input2[100],n,i;
     float hasilx,hasily,hasilxy,hasilx2,hasily2,hasil1,hasil2;
     system("cls");
-    cout << "##  Program C++ Mencari Akar Persamaan Kuadrat ##" << endl;
+    cout << "##  UAS PEMROGRAMAN DASAR ##" << endl;
     cout << "=================================================" << endl;
     cout << "" << endl;
     cout<<"Masukkan jumlah data : ";cin >> n;
