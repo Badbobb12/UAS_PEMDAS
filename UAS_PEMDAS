@@ -1,76 +1,134 @@
 #include <iostream>
-#include <conio.h>
 #include <iomanip>
+#include <cmath>
 using namespace std;
 
-int main()
+// Hitung sigmaX
+float hitungX(int sigmax[], int j)
 {
- float X[300];
- float Y[300];
- float data, totalX, totalY, totalXY, totalXkuadrat, kuadrattotalX;
- float a,b ;
- int i, ulang;
- cout << "Program menghitung nilai regresi dengan format Y=bX+a" ;
- cout << endl ;
- 
- do
- {
-    totalX=0, totalY=0, totalXY=0, totalXkuadrat=0;
-    cout << endl << endl ;
- cout << "Masukkan banyak data yang ingin Anda di imput : " ;
- cin >> data ;
- cout << endl ;
- 
- //input data
- for (i=0 ; i<data ; i++)
-  {
-   cout << "Masukkan nilai X-" << i+1 << " : " ;
-   cin >> X[i];
-   cout << "Masukkan nilai Y-" << i+1 << " : " ;
-   cin >> Y[i];
-   cout << endl;
-  }
- 
- cout << endl;
- 
- // menghitung nilai b
-  
-  //menghitung nilai jumlah nilai XY
-  for (i=0 ; i<data ; i++)
-   totalXY=totalXY+(X[i]*Y[i]);
-  
-  //menghitung nilai jumlah X dan jumlah Y
-  for (i=0 ; i<data ; i++)
-   {
-    totalX=totalX+X[i];
-    totalY=totalY+Y[i];
-   }
-  
-  //menghitung total X kuadrat
-  for (i=0 ; i<data ; i++)
-   totalXkuadrat=totalXkuadrat+(X[i]*X[i]);
-  
-  // menghitung kuadrat total X
-  for (i=0 ; i<data ; i++)
-   kuadrattotalX=totalX*totalX;
-  
-  //menghitung nilai b
-  float b=((data*totalXY)-(totalX*totalY)) / ((data*totalXkuadrat)-(kuadrattotalX));
-  
-  
- //menghitung nilai a
-  
-  float a=((totalXkuadrat*totalY)-(totalX*totalXY)) / ((data*totalXkuadrat)-(kuadrattotalX));
-   
- // menampilkan hasil persamaan regresi
- cout << "Persaamaan linear dari fungsi regresi di atas adalah Y=" << endl << b << "X" 
-         << setiosflags(ios::showpos) << a << endl;
- getch();
-    
-    // fungsi mengulang program
-    cout << "Ingin mengulang (Y/T) ?" ;
-    ulang=getch();
-    } while (ulang=='Y' || ulang=='y');
-    
- return 0;
+    float jml = 0;
+    int i = 0;
+    while(i < j){
+        jml += sigmax[i];
+        i++;
+    }
+    return jml;
 }
+// Hitung sigmaY
+float  hitungY(int sigmay[], int j)
+{
+    float jml = 0;
+    int i = 0;
+    while(i < j){
+        jml += sigmay[i];
+        i++;
+    }
+    return jml;
+}
+// Hitung SigmaXY
+float hitungXY(int sigmaXY1[], int sigmaXY2[], int j)
+{
+    float jml = 0;
+    int i = 0;
+    while(i < j){
+        jml += sigmaXY1[i] * sigmaXY2[i];
+        i++;
+    }
+    return jml;
+}
+float hitungX2(int sigmaX2[], int j)
+{
+    float jml = 0, jml2 = 0;
+    int i = 0;
+    while(i < j){
+        jml += pow(sigmaX2[i],2);
+        i++;
+    }
+    jml2 += jml;
+    return jml2;
+}
+float hitungY2(int sigmaY2[], int j)
+{
+    float jml = 0;
+    int i = 0;
+    while(i < j){
+        jml += pow(sigmaY2[i],2);
+        i++;
+    }
+    return jml;
+}
+
+float hasill(int hitung1, int hitung2, int hitung3, int hitung4, float hitung5, int j){
+    float korelasipearson;
+    korelasipearson = (j * hitung3 - hitung1 * hitung2) / sqrt((j * hitung4 - hitung1 * hitung1)* (j * hitung5 - hitung2 * hitung2));
+    return korelasipearson;
+}
+
+float hasill2(int korelasi){
+    float KoefisienDeterminasi;
+    KoefisienDeterminasi = (korelasi * korelasi) * (100 / 100);
+    return KoefisienDeterminasi;
+}
+int main(){
+    int input1[100],input2[100],n,i;
+    float hasilx,hasily,hasilxy,hasilx2,hasily2,hasil1,hasil2;
+    system("cls");
+    cout << "##  Program C++ Mencari Akar Persamaan Kuadrat ##" << endl;
+    cout << "=================================================" << endl;
+    cout << "" << endl;
+    cout<<"Masukkan jumlah data : ";cin >> n;
+    cout << endl;
+    i = 0;
+    while(i < n){
+        cout<<"Masukkan nilai X ke-"<< i+1 << " : ";cin >> input1[i];
+        cout<<"Masukkan nilai y ke-"<< i+1 << " : ";cin >> input2[i];
+        i++;
+    }
+
+    hasilx = hitungX(input1, n);
+    hasily = hitungY(input2, n);
+    hasilxy = hitungXY(input1, input2,n);
+    hasilx2 = hitungX2(input1,n);
+    hasily2 = hitungY2(input2,n);
+    hasil1 = hasill(hasilx, hasily,hasilxy,hasilx2,hasily2,n);
+    hasil2 = hasill2(hasil1);
+    cout << "\nhasil X : " << hasilx;
+    cout << "\nhasil Y : " << hasily;
+    cout << "\nhasil XY : " << hasilxy;
+    cout << "\nhasil X2 : " << setprecision(3) << hasilx2;
+    cout << "\nhasil Y2 : " << setprecision(3) << hasily2;
+    cout << "\nhasil korelasi : " << setprecision(2) << hasil1;
+    cout << "\nhasil determinasi : " << setprecision(2) << hasil2;
+
+
+    string korelasi, hubungan;
+    if (hasil1>0.70){
+		korelasi="Hubungan korelasi sangat kuat";
+	}
+	else if (hasil1>=0.50){
+		korelasi="Hubungan korelasi sedang";
+	}
+	else if (hasil1>=0.30){
+		korelasi="Hubungan korelasi moderat";
+	}
+	else if (hasil1>=0.10){
+		korelasi="Hubungan korelasi rendah";
+	}
+	else if (hasil1<0.10) {
+		korelasi="Hubungan korelasi diabaikan";
+	}
+	cout<< korelasi<<endl;
+
+	if (hasil1>0){
+		hubungan="Hubungan antara variable x dan y adalah positif, dimana jika nilai x bertambah, maka nilai y pun akan bertambah dan juga sebaliknya";
+	}
+	else if(hasil1<0){
+		hubungan="Hubungan antara variable x dan y adalah negatif, dimana jika nilai x bertambah, maka nilai y akan mengecil dan juga sebaliknya";
+	}
+	else if (hasil1=0){
+		hubungan="Tidak ada hubungan antara variable x dan y";
+	}
+	cout<<hubungan<<endl;
+
+    return 0;
+}    
